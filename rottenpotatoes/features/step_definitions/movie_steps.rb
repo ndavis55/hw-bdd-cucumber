@@ -1,10 +1,13 @@
 # Add a declarative step here for populating the DB with movies.
 
+num_movies = 0
 Given /the following movies exist/ do |movies_table|
+  num_movies = 0
   movies_table.hashes.each do |movie|
     # each returned element will be a hash whose key is the table header.
     # you should arrange to add that movie to the database here.
     Movie.create!(movie)
+    num_movies+=1
   end
   #fail "Unimplemented"
 end
@@ -41,5 +44,5 @@ end
 
 Then /I should see all the movies/ do
   # Make sure that all the movies in the app are visible in the table
-  fail "Unimplemented"
+  page.should have_css("table#movies tbody tr",:count => num_movies.to_i)
 end
